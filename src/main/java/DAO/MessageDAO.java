@@ -33,9 +33,9 @@ public class MessageDAO {
             ResultSet pkeyResultSet = preparedStatement.getGeneratedKeys();
 
             if(pkeyResultSet.next()) {
-                int generated_message_id = (int) pkeyResultSet.getLong(1);
-                return new Message(generated_message_id, message.posted_by, message.message_text, message.time_posted_epoch);
-            }//int message_id, int posted_by, String message_text, long time_posted_epoch
+                //int generated_message_id = (int) pkeyResultSet.getLong(1);
+                return new Message(/*generated_message_id,*/ message.posted_by, message.message_text, message.time_posted_epoch);
+            }//int posted_by, String message_text, long time_posted_epoch
         } catch(SQLException e) {
             System.out.println(e.getMessage());
         }
