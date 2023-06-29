@@ -1,6 +1,9 @@
 package Service;
 
 import Model.Message;
+
+import java.util.List;
+
 import DAO.MessageDAO;
 
 public class MessageService {
@@ -24,5 +27,34 @@ public class MessageService {
         }
         return null;
     }
+
+    //delete message by message_id
+    //
+    //
+
+    //retreieve all messages for user
+    //
+    //
+
+    //retrieve all messages
+    public List<Message> getAllMessages() {
+        return messageDAO.getAllMessages();
+    }
+
+    //retrieve message by message_id
+    //
+    //
+
+    //update message_text
+    //
+    //
+
+    //user login
+    //
+    //
+
+    //user reg
+    //
+    //
     
 }

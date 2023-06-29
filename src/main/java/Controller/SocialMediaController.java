@@ -36,6 +36,12 @@ public class SocialMediaController {
         app.get("example-endpoint", this::exampleHandler);
         //for creating a message:
         app.post("/messages", this::postCreateMessageHandler);
+        //delete all messages by message id
+        //
+        //get all messages for user
+        //
+        //get all messages
+        app.get("/messages", this::getAllMessagesHandler);
 
         return app;
     }
@@ -62,5 +68,33 @@ public class SocialMediaController {
         }
     }
 
+    //delete message by message_id
+    //
+    //
+
+    //retreieve all messages for user
+    //
+    //
+
+    //retrieve all messages
+    private void getAllMessagesHandler(Context context) {
+        context.json(messageService.getAllMessages());
+    }
+
+    //retrieve message by message_id
+    //
+    //
+
+    //update message_text
+    //
+    //
+
+    //user login
+    //
+    //
+
+    //user reg
+    //
+    //
 
 }
