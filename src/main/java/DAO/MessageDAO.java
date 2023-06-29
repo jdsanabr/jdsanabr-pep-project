@@ -81,7 +81,8 @@ public class MessageDAO {
 
             while(rs.next()) {
                 //int message_id, int posted_by, String message_text, long time_posted_epoch
-                Message message = new Message();
+                Message message = new Message(rs.getInt("message_id"), rs.getInt("posted_by"),
+                rs.getString("message_text"), rs.getLong("time_posted_epoch"));
 
                 messages.add(message);
             }
