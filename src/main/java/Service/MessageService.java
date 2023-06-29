@@ -41,10 +41,6 @@ public class MessageService {
         return messageDAO.getAllMessages();
     }
 
-    //retrieve message by message_id
-    //
-    //
-
     //update message_text
     //
     //

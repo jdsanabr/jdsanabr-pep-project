@@ -81,10 +81,6 @@ public class SocialMediaController {
         context.json(messageService.getAllMessages());
     }
 
-    //retrieve message by message_id
-    //
-    //
-
     //update message_text
     //
     //
