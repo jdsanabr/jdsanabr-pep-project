@@ -23,7 +23,7 @@ public class MessageDAO {
         try {
             String sql = "INSERT INTO message (posted_by, message_text) values (?, ?)";
 
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             preparedStatement.setInt(1, message.posted_by);
             preparedStatement.setString(2, message.message_text);
