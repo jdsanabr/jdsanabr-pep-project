@@ -1,5 +1,13 @@
 package Controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import Model.Account;
+import Model.Message;
+
+import Service.AccountService;
+import Service.MessageService;
+
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -9,6 +17,9 @@ import io.javalin.http.Context;
  * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
  */
 public class SocialMediaController {
+    AccountService accountService;
+    MessageService messageService;
+
     /**
      * In order for the test cases to work, you will need to write the endpoints in the startAPI() method, as the test
      * suite must receive a Javalin object from this method.
@@ -17,6 +28,8 @@ public class SocialMediaController {
     public Javalin startAPI() {
         Javalin app = Javalin.create();
         app.get("example-endpoint", this::exampleHandler);
+        //for creating a message:
+        app.post("/messages", this::postCreateMessageHandler);
 
         return app;
     }
@@ -27,6 +40,20 @@ public class SocialMediaController {
      */
     private void exampleHandler(Context context) {
         context.json("sample text");
+    }
+
+    //SUCCESSFUL IF: message_text is not blank, under 255 chars, and posted_by refers to a real/existing user
+    //message should be persisted, but will not contain a message_id
+    //NOT SUCCESSFUL: the response status should be 400. (Client error)
+    private void postCreateMessageHandler(Context context) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Message message = mapper.readValue(context.body(), Message.class);
+        Message createdMessage = messageService.createMessage(message);
+        if(createdMessage != null) {
+            context.json(mapper.writeValueAsString(createdMessage));
+        } else {
+            context.status(400);
+        }
     }
 
 

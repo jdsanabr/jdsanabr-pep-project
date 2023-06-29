@@ -17,7 +17,7 @@ public class MessageDAO {
      * The request body will contain a JSON representation of a message,
      * which should be persisted to the database, but will not contain a message_id.
     */
-    public void createMessage(Message message) {
+    public Message createMessage(Message message) {
         //SUCCESSFUL IF: message_text is not blank, under 255 chars, and posted_by refers to a real/existing user
         //message should be persisted, but will not contain a message_id
         //NOT SUCCESSFUL: the response status should be 400. (Client error)
@@ -25,18 +25,25 @@ public class MessageDAO {
         Connection connection = ConnectionUtil.getConnection();
 
         try {
-            String sql = "INSERT INTO message (message_text, posted_by) values (?, ?)";
+            String sql = "INSERT INTO message (posted_by, message_text) values (?, ?)";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(1, message.message_text);
-            preparedStatement.setInt(2, message.posted_by);
+            preparedStatement.setInt(1, message.posted_by);
+            preparedStatement.setString(2, message.message_text);
 
             preparedStatement.executeUpdate();
+
+            ResultSet pkeyResultSet = preparedStatement.getGeneratedKeys();
+
+            if(pkeyResultSet.next()){
+                int generated_message_id = (int) pkeyResultSet.getLong(1);
+                return new Message(generated_message_id, message.posted_by, message.message_text, message.time_posted_epoch);
+            }//int message_id, int posted_by, String message_text, long time_posted_epoch
         } catch(SQLException e) {
             System.out.println(e.getMessage());
         }
-
+        return null;
     }
 
     /*

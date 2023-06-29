@@ -14,14 +14,15 @@ public class MessageService {
         messageDAO = m;
     }
 
-    public void createMessage(Message message) {
+    public Message createMessage(Message message) {
         //SUCCESSFUL IF: message_text is not blank, under 255 chars, and posted_by refers to a real/existing user
         //message should be persisted, but will not contain a message_id
         //NOT SUCCESSFUL: the response status should be 400. (Client error)
 
         if(!message.message_text.isEmpty() && message.getMessage_text().length() < 255 && message.posted_by != 0) {
-            messageDAO.createMessage(message);
+            return messageDAO.createMessage(message);
         }
+        return null;
     }
     
 }
