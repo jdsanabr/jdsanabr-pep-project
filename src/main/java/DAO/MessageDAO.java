@@ -18,10 +18,6 @@ public class MessageDAO {
      * which should be persisted to the database, but will not contain a message_id.
     */
     public Message createMessage(Message message) {
-        //SUCCESSFUL IF: message_text is not blank, under 255 chars, and posted_by refers to a real/existing user
-        //message should be persisted, but will not contain a message_id
-        //NOT SUCCESSFUL: the response status should be 400. (Client error)
-
         Connection connection = ConnectionUtil.getConnection();
 
         try {
@@ -36,7 +32,7 @@ public class MessageDAO {
 
             ResultSet pkeyResultSet = preparedStatement.getGeneratedKeys();
 
-            if(pkeyResultSet.next()){
+            if(pkeyResultSet.next()) {
                 int generated_message_id = (int) pkeyResultSet.getLong(1);
                 return new Message(generated_message_id, message.posted_by, message.message_text, message.time_posted_epoch);
             }//int message_id, int posted_by, String message_text, long time_posted_epoch

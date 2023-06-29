@@ -19,7 +19,8 @@ public class MessageService {
         //message should be persisted, but will not contain a message_id
         //NOT SUCCESSFUL: the response status should be 400. (Client error)
 
-        if(!message.message_text.isEmpty() && message.getMessage_text().length() < 255 && message.posted_by != 0) {
+        //posted_by ??
+        if(!message.message_text.isEmpty() && message.getMessage_text().length() < 255) {
             return messageDAO.createMessage(message);
         }
         return null;
