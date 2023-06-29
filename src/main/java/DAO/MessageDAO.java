@@ -20,6 +20,7 @@ public class MessageDAO {
     public void createMessage(Message message) {
         //SUCCESSFUL IF: message_text is not blank, under 255 chars, and posted_by refers to a real/existing user
         //message should be persisted, but will not contain a message_id
+        //NOT SUCCESSFUL: the response status should be 400. (Client error)
 
         Connection connection = ConnectionUtil.getConnection();
 
@@ -36,9 +37,6 @@ public class MessageDAO {
             System.out.println(e.getMessage());
         }
 
-        //NOT SUCCESSFUL: the response status should be 400. (Client error)
-
-        // new Message();
     }
 
     /*
