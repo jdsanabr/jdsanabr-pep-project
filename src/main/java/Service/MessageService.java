@@ -15,9 +15,8 @@ public class MessageService {
     }
 
     public Message createMessage(Message message) {
-        //SUCCESSFUL IF: message_text is not blank, under 255 chars, and posted_by refers to a real/existing user
+        //REQ: message_text is not blank, under 255 chars, and posted_by refers to a real/existing user
         //message should be persisted, but will not contain a message_id
-        //NOT SUCCESSFUL: the response status should be 400. (Client error)
 
         //posted_by ??
         if(!message.message_text.isEmpty() && message.getMessage_text().length() < 255) {
