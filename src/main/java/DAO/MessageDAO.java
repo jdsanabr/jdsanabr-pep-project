@@ -10,14 +10,6 @@ import java.util.List;
 
 public class MessageDAO {
 
-    /*
-     * Create New Message:
-     * 
-     * As a user, I should be able to submit a new post
-     * on the endpoint POST localhost:8080/messages.
-     * The request body will contain a JSON representation of a message,
-     * which should be persisted to the database, but will not contain a message_id.
-    */
     public Message createMessage(Message message) {
         Connection connection = ConnectionUtil.getConnection();
 
@@ -43,27 +35,28 @@ public class MessageDAO {
         return null;
     }
 
-    /*
-     * Delete a Message Given Message Id:
-     * 
-     * As a User, I should be able to submit a DELETE request
-     * on the endpoint DELETE localhost:8080/messages/{message_id}
-    */
-    public void deleteMessageByMessageId(int id) {
+    public Message deleteMessageByMessageId(int id) {
         Connection connection = ConnectionUtil.getConnection();
 
         try {
         	//change: added '*' to sql string
-            String sql = "DELETE * FROM message WHERE message_id = ?";
+            String sql = "DELETE FROM message WHERE message_id = ?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
+            
+            Message deleteThisMessage = getMessageByMessageId(id);
+            
             //is there a preparedStatement for deleting?
+            preparedStatement.setInt(1, id);
 
             preparedStatement.executeUpdate();
+            
+            return deleteThisMessage;
         } catch(SQLException e) {
             System.out.println(e.getMessage());
         }
+        
+        return null;
     }
 
     public List<Message> getAllMessagesForUser(int account_id) {
