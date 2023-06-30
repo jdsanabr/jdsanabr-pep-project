@@ -18,6 +18,7 @@ public class MessageService {
         messageDAO = m;
     }
 
+    //create a message
     public Message createMessage(Message message) {
         //REQ: message_text is not blank, under 255 chars, and posted_by refers to a real/existing user
         //message should be persisted, but will not contain a message_id
@@ -28,9 +29,16 @@ public class MessageService {
         }
         return null;
     }
+    //
 
     //delete message by message_id
-    //
+    public Message deleteMessageByMessageId(int message_id) {
+    	if(messageDAO.getMessageByMessageId(message_id) != null) {
+    		return messageDAO.deleteMessageByMessageId(message_id);
+    	} else {
+    		return null;
+    	}
+    }
     //
 
     //retrieve all messages for user
@@ -43,6 +51,7 @@ public class MessageService {
     public List<Message> getAllMessages() {
         return messageDAO.getAllMessages();
     }
+    
     
     //retrieve a message by message id
     public Message getMessageByMessageId(int id) {
