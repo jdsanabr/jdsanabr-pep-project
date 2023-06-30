@@ -1,5 +1,6 @@
 package Service;
 
+import Model.Account;
 import Model.Message;
 
 import java.util.List;
@@ -32,15 +33,17 @@ public class MessageService {
     //
     //
 
-    //retreieve all messages for user
-    //
+    //retrieve all messages for user
+    public List<Message> getAllMessagesForUser(int account_id) {
+    	return messageDAO.getAllMessagesForUser(account_id);
+    }
     //
 
     //retrieve all messages
     public List<Message> getAllMessages() {
         return messageDAO.getAllMessages();
     }
-
+    
     //retrieve a message by message id
     public Message getMessageByMessageId(int id) {
     	return messageDAO.getMessageByMessageId(id);
@@ -48,14 +51,6 @@ public class MessageService {
     //
 
     //update message_text
-    //
-    //
-
-    //user login
-    //
-    //
-
-    //user reg
     //
     //
     
