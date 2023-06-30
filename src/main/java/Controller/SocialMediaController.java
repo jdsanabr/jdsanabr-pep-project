@@ -1,5 +1,7 @@
 package Controller;
 
+import java.util.List;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -39,11 +41,11 @@ public class SocialMediaController {
         //delete all messages by message id
         //
         //get all messages for user
-        //
+        app.get("/accounts/{account_id}/messages", this::getAllMessagesForUserHandler);
         //get all messages
         app.get("/messages", this::getAllMessagesHandler);
         //get a message by message id
-        app.get("/messages/{message_id}", this::getMessageByMessageId);
+        app.get("/messages/{message_id}", this::getMessageByMessageIdHandler);
 
         return app;
     }
@@ -75,18 +77,28 @@ public class SocialMediaController {
     //
 
     //retreieve all messages for user
-    //
+    private void getAllMessagesForUserHandler(Context context) throws JsonProcessingException {
+    	ObjectMapper mapper = new ObjectMapper();
+    	List<Message> messages = messageService.getAllMessagesForUser(Integer.parseInt(context.pathParam("account_id")));
+    	
+    	if(messages != null) {
+    		context.json(mapper.writeValueAsString(messages));
+    	} else {
+    		mapper.writeValueAsString("");
+    	}
+    }
     //
 
     //retrieve all messages
     private void getAllMessagesHandler(Context context) {
         context.json(messageService.getAllMessages());
     }
-
+    
     //retrieve a message by message id
-    private void getMessageByMessageId(Context context) throws JsonProcessingException {
+    private void getMessageByMessageIdHandler(Context context) throws JsonProcessingException {
     	ObjectMapper mapper = new ObjectMapper();
     	Message message = messageService.getMessageByMessageId(Integer.parseInt(context.pathParam("message_id")));
+    	
     	if(message != null) {
     		context.json(mapper.writeValueAsString(message));
     	} else {
