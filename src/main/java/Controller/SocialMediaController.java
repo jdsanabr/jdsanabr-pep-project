@@ -42,6 +42,8 @@ public class SocialMediaController {
         //
         //get all messages
         app.get("/messages", this::getAllMessagesHandler);
+        //get a message by message id
+        app.get("/messages/{message_id}", this::getMessageByMessageId);
 
         return app;
     }
@@ -79,6 +81,18 @@ public class SocialMediaController {
     //retrieve all messages
     private void getAllMessagesHandler(Context context) {
         context.json(messageService.getAllMessages());
+    }
+
+    //retrieve a message by message id
+    private void getMessageByMessageId(Context context) throws JsonProcessingException {
+    	ObjectMapper mapper = new ObjectMapper();
+    	Message message = messageService.getMessageByMessageId(Integer.parseInt(context.pathParam("message_id")));
+    	if(message != null) {
+    		context.json(mapper.writeValueAsString(message));
+    	} else {
+    		mapper.writeValueAsString("");
+    	}
+    	
     }
 
     //update message_text
