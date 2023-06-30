@@ -38,8 +38,8 @@ public class SocialMediaController {
         app.get("example-endpoint", this::exampleHandler);
         //for creating a message:
         app.post("/messages", this::postCreateMessageHandler);
-        //delete all messages by message id
-        //
+        //delete message by message id
+        app.delete("/messages/{message_id}", this::deleteMessageByMessageId);
         //get all messages for user
         app.get("/accounts/{account_id}/messages", this::getAllMessagesForUserHandler);
         //get all messages
@@ -73,7 +73,19 @@ public class SocialMediaController {
     }
 
     //delete message by message_id
-    //
+    private void deleteMessageByMessageId(Context context) throws JsonProcessingException {
+    	ObjectMapper mapper = new ObjectMapper();
+    	
+    	int message_id = Integer.parseInt(context.pathParam("message_id"));
+    	
+    	Message deletedMessage = messageService.deleteMessageByMessageId(message_id);
+    	
+    	if(deletedMessage != null) {
+    		context.json(mapper.writeValueAsString(deletedMessage));
+    	} else {
+    		mapper.writeValueAsString("");
+    	}
+    }
     //
 
     //retreieve all messages for user
