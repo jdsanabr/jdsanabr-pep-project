@@ -39,13 +39,15 @@ public class SocialMediaController {
         //for creating a message:
         app.post("/messages", this::postCreateMessageHandler);
         //delete message by message id
-        app.delete("/messages/{message_id}", this::deleteMessageByMessageId);
+        app.delete("/messages/{message_id}", this::deleteMessageByMessageIdHandler);
         //get all messages for user
         app.get("/accounts/{account_id}/messages", this::getAllMessagesForUserHandler);
         //get all messages
         app.get("/messages", this::getAllMessagesHandler);
         //get a message by message id
         app.get("/messages/{message_id}", this::getMessageByMessageIdHandler);
+        //update a message by message id
+        app.patch("messages/{message_id}", this::updateMessageByMessageIdHandler);
 
         return app;
     }
@@ -63,8 +65,11 @@ public class SocialMediaController {
     //NOT SUCCESSFUL: the response status should be 400. (Client error)
     private void postCreateMessageHandler(Context context) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
+        
         Message message = mapper.readValue(context.body(), Message.class);
+        
         Message createdMessage = messageService.createMessage(message);
+        
         if(createdMessage != null) {
             context.json(mapper.writeValueAsString(createdMessage));
         } else {
@@ -73,7 +78,7 @@ public class SocialMediaController {
     }
 
     //delete message by message_id
-    private void deleteMessageByMessageId(Context context) throws JsonProcessingException {
+    private void deleteMessageByMessageIdHandler(Context context) throws JsonProcessingException {
     	ObjectMapper mapper = new ObjectMapper();
     	
     	int message_id = Integer.parseInt(context.pathParam("message_id"));
@@ -120,7 +125,22 @@ public class SocialMediaController {
     }
 
     //update message_text
-    //
+    private void updateMessageByMessageIdHandler(Context context) throws JsonProcessingException {
+    	ObjectMapper mapper = new ObjectMapper();
+    	
+    	int message_id = Integer.parseInt(context.pathParam("message_id"));
+    	String newText = mapper.readValue(context.body(), Message.class).getMessage_text();
+    	//debugging:
+    	//System.out.println("newText: " + newText);
+    	
+    	Message updatedMessage = messageService.updateMessagebyMessageId(message_id, newText);
+    	
+    	if(updatedMessage != null) {
+    		context.json(mapper.writeValueAsString(updatedMessage));
+    	} else {
+    		context.status(400);
+    	}
+    }
     //
 
     //user login
