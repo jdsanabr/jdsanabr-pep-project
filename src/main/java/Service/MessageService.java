@@ -60,7 +60,22 @@ public class MessageService {
     //
 
     //update message_text
-    //
+    public Message updateMessagebyMessageId(int id, String newText) {
+    	//REQ: successful if and only if the message id already exists
+    	//and the new message_text is not blank
+    	//and is not over 255 characters.
+    	Message message = getMessageByMessageId(id);
+    	
+    	if(message != null
+    			&& !message.message_text.isEmpty()
+    			&& !newText.isEmpty()
+    			&& newText.length() < 255) {
+    		messageDAO.updateMessageByMessageId(id, newText);
+    		return messageDAO.getMessageByMessageId(id);
+    	} else {
+    		return null;
+    	}
+    }
     //
     
 }
