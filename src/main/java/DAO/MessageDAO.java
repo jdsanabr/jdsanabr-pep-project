@@ -46,7 +46,6 @@ public class MessageDAO {
             
             Message deleteThisMessage = getMessageByMessageId(id);
             
-            //is there a preparedStatement for deleting?
             preparedStatement.setInt(1, id);
 
             preparedStatement.executeUpdate();
@@ -136,8 +135,21 @@ public class MessageDAO {
         return null;
     }
 
-    public void updateMessageText(int id, Message m) { //will need int id as well?
-        //
+    public void updateMessageByMessageId(int id, String newText) {
+    	Connection connection = ConnectionUtil.getConnection();
+    	
+    	try {
+    		String sql = "UPDATE message SET message_text = ? WHERE message_id = ?";
+    		
+    		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+    		
+    		preparedStatement.setString(1, newText);
+    		preparedStatement.setInt(2, id);
+    		
+    		preparedStatement.executeUpdate();
+    	} catch(SQLException e) {
+    		System.out.println(e.getMessage());
+    	}
     }
     
 }
