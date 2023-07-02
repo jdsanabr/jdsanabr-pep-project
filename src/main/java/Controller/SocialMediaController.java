@@ -147,8 +147,22 @@ public class SocialMediaController {
     //
     //
 
-    //user reg
-    //
+    //user registration
+    private void postUserRegistration(Context context) throws JsonMappingException, JsonProcessingException {
+    	ObjectMapper mapper = new ObjectMapper();
+    	
+    	Account account = mapper.readValue(context.body(), Account.class);
+    	//debugging:
+    	//System.out.println("controller file, account obj: " + account);
+    	
+    	Account createdAccount = accountService.userRegistration(account);
+    	
+    	if(createdAccount != null) {
+    		context.json(mapper.writeValueAsString(createdAccount));
+    	} else {
+    		context.status(400);
+    	}
+    }
     //
 
 }
