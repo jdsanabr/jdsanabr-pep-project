@@ -34,10 +34,6 @@ public class AccountDAO {
 			//debugging:
 	    	//System.out.println("dao file, try block, ResultSet: " + rs);
 			
-			if(!rs.next()) {
-				return null;
-			}
-			
 			while(rs.next()) {
 				Account account = new Account(rs.getInt("account_id"),
 						rs.getString("username"), rs.getString("password"));
