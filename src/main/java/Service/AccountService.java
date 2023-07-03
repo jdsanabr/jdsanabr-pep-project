@@ -16,15 +16,15 @@ public class AccountService {
 	}
 	
 	//account login
-//	public Account login(Account account) {
-//		//REQ: successful if the username and password provided
-//		//in the request body JSON match a real account existing on the database
-//		if() {
-//			
-//		}
-//		
-//		return null;
-//	}
+	public Account login(Account account) {
+		//REQ: successful if the username and password provided
+		//in the request body JSON match a real account existing on the database
+		if(accountDAO.getAccountByUsername(account.getUsername()) != null) {
+			return accountDAO.getAccountByUsername(account.getUsername());
+		}
+		
+		return null;
+	}
 	//
 	
 	//user registration
