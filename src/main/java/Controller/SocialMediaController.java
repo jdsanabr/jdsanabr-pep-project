@@ -3,6 +3,7 @@ package Controller;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Model.Account;
@@ -48,6 +49,10 @@ public class SocialMediaController {
         app.get("/messages/{message_id}", this::getMessageByMessageIdHandler);
         //update a message by message id
         app.patch("messages/{message_id}", this::updateMessageByMessageIdHandler);
+        //user login
+        app.post("login", this::postUserLogin);
+        //user registration
+        app.post("register", this::postUserRegistration);
 
         return app;
     }
@@ -143,8 +148,20 @@ public class SocialMediaController {
     }
     //
 
-    //user login
-    //
+    //user login, NOT FINISHED
+    private void postUserLogin(Context context) throws JsonMappingException, JsonProcessingException {
+    	ObjectMapper mapper = new ObjectMapper();
+    	
+    	Account account = mapper.readValue(context.body(), Account.class);
+    	
+    	Account accountLoggedIn = accountService.login(account);
+    	
+    	if(accountLoggedIn != null) {
+    		context.json(mapper.writeValueAsString(accountLoggedIn));	
+    	} else {
+    		context.status(401);
+    	}
+    }
     //
 
     //user registration
@@ -163,6 +180,5 @@ public class SocialMediaController {
     		context.status(400);
     	}
     }
-    //
-
+    // 
 }
