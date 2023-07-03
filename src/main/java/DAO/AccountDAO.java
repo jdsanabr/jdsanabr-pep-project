@@ -4,16 +4,8 @@ import Model.Account;
 import Util.ConnectionUtil;
 
 import java.sql.*; //(Connection, PreparedStatement, ResultSet)
-import java.util.ArrayList;
-import java.util.List;
 
 public class AccountDAO {
-	
-	//account login
-//	public Account login(Account account) {
-//		return null;
-//	}
-	//
 	
 	//helper method, used by primary methods to look up an account and see if it exists
 	public Account getAccountByUsername(String username) {
@@ -49,13 +41,39 @@ public class AccountDAO {
 	//end of helper method
 	
 	//helper method
+	public Account getPassword(Account account) {
+		Connection connection = ConnectionUtil.getConnection();
+		
+		try {
+			String sql = "SELECT * FROM account WHERE password = ?";
+			
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			
+			preparedStatement.setString(1, account.password);
+			
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			while(rs.next()) {
+				Account acc = new Account(rs.getInt("account_id"),
+						rs.getString("username"), rs.getString("password"));
+				
+				return acc;
+			}
+		} catch(SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
+	}
+	//end of helper method
+	
+	//helper method
 	public Account insertAccount(Account account) {
 		Connection connection = ConnectionUtil.getConnection();
 		
 		try {
 			String sql = "INSERT INTO account (username, password) values (?, ?)";
 			
-			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			
 			preparedStatement.setString(1, account.getUsername());
 			preparedStatement.setString(2, account.getPassword());
@@ -66,9 +84,9 @@ public class AccountDAO {
 			//debugging:
 			//System.out.println("dao, account obj: " + account);
 			System.out.println("dao, pkResultSet: " + pkeyResultSet);
-			if(!pkeyResultSet.next()) {
-				System.out.println("dao, pkResultSet.next(): false");
-			}
+//			if(pkeyResultSet.next()) {
+//				System.out.println("dao, pkResultSet.next(): true");
+//			}
 			
 			if(pkeyResultSet.next()) {
 				int generatedId = (int) pkeyResultSet.getLong(1);
