@@ -148,7 +148,7 @@ public class SocialMediaController {
     }
     //
 
-    //user login, NOT FINISHED
+    //user login
     private void postUserLogin(Context context) throws JsonMappingException, JsonProcessingException {
     	ObjectMapper mapper = new ObjectMapper();
     	
